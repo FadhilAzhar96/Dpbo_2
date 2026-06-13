@@ -1,0 +1,154 @@
+@startuml ClassDiagram
+!pragma layout smetana
+skinparam dpi 140
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam classBackgroundColor #FEFEFE
+skinparam classBorderColor #2C3E50
+skinparam ArrowColor #2C3E50
+
+class SistemPendaftaranCalonMahasiswa {
+  - layananAdmin : LayananAdministrasiPendaftaran
+  - kontroler : KontrolerAplikasi
+  - penggunaAktif : Pengguna
+  + jalankan() : void
+}
+
+class KontrolerAplikasi {
+  - ui : PresentasiMenuKonsol
+  - layanan : LayananAdministrasiPendaftaran
+  - validasi : ValidasiInputSeleksi
+  + mulaiLoopMenu() : void
+  + prosesPilihanMenu(idx) : void
+}
+
+class PresentasiMenuKonsol {
+  + tampilkanMenuUtama() : void
+  + bacaString() : String
+  + bacaInt() : int
+}
+
+class ValidasiInputSeleksi {
+  + validasiRentangNilaiTes(n) : boolean
+  + validasiNamaTidakKosong(nama) : boolean
+}
+
+abstract class Pengguna {
+  # idPetugas : String
+  # namaLengkap : String
+  + getNamaLengkap() : String
+  + {abstract} getPeranSistem() : String
+}
+
+class AdminPetugas {
+  - kodeAkses : String
+  + AdminPetugas()
+  + AdminPetugas(id, nama, kode)
+  + getPeranSistem() : String
+}
+
+class LayananAdministrasiPendaftaran {
+  - arsip : ArsipPendaftaranCalon
+  - penilai : PenilaiSeleksiCalon
+  + inputCalonBaru(nama, jurusan, n1, n2) : boolean
+  + hapusCalon(nama) : boolean
+  + ubahNilaiTes(nama, n1, n2) : boolean
+  + tampilkanSemuaCalon() : void
+  + cariCalon(nama) : CalonMahasiswa
+  + tampilkanCalonNilaiTotalTertinggi() : void
+}
+
+class ArsipPendaftaranCalon {
+  - daftarCalon : ArrayList<CalonMahasiswa>
+  + tambahCalon(c) : boolean
+  + hapusBerdasarkanNama(nama) : boolean
+  + cariBerdasarkanNama(nama) : CalonMahasiswa
+  + dapatkanSemua() : ArrayList<CalonMahasiswa>
+  + perbaruiNilaiTesBerdasarkanNama(nama, n1, n2) : boolean
+}
+
+class LayananPencarianCalon {
+  - arsip : ArsipPendaftaranCalon
+  + cariPersisNama(nama) : CalonMahasiswa
+}
+
+class CalonMahasiswa {
+  - nama : String
+  - jurusan : String
+  - nilaiTes1 : int
+  - nilaiTes2 : int
+  - statusKelulusan : String
+  + CalonMahasiswa()
+  + CalonMahasiswa(nama, jurusan, n1, n2)
+  + hitungTotalNilai() : int
+  + getNama() : String
+  + getJurusan() : String
+  + getNilaiTes1() : int
+  + getNilaiTes2() : int
+  + getStatusKelulusan() : String
+  + setNilaiTes1(n) : void
+  + setNilaiTes2(n) : void
+  + setStatusKelulusan(s) : void
+}
+
+class PenilaiSeleksiCalon {
+  - aturan : AturanKelulusan
+  + terapkanStatus(c) : void
+  + evaluasiUlang(c) : void
+}
+
+interface AturanKelulusan {
+  + tentukanStatus(total) : String
+}
+
+class AturanKelulusanInstitusi {
+  + {static} BATAS_NILAI_LULUS : int
+  + tentukanStatus(total) : String
+}
+
+class LayananPelaporanDaftar {
+  + cetakHeaderTabel() : void
+  + cetakDaftar(daftar) : void
+}
+
+class LayananAnalisisNilaiTertinggi {
+  + ambilCalonTertinggi(daftar) : CalonMahasiswa
+}
+
+class RingkasanStatistikPendaftaran {
+  + hitungJumlahTotal(daftar) : int
+  + hitungPerStatus(daftar, status) : int
+}
+
+' ===== Relasi =====
+SistemPendaftaranCalonMahasiswa o--> KontrolerAplikasi
+SistemPendaftaranCalonMahasiswa o--> LayananAdministrasiPendaftaran
+SistemPendaftaranCalonMahasiswa ..> Pengguna : penggunaAktif
+
+AdminPetugas --|> Pengguna
+
+KontrolerAplikasi ..> PresentasiMenuKonsol
+KontrolerAplikasi ..> ValidasiInputSeleksi
+KontrolerAplikasi ..> LayananAdministrasiPendaftaran
+
+LayananAdministrasiPendaftaran --> ArsipPendaftaranCalon
+LayananAdministrasiPendaftaran --> PenilaiSeleksiCalon
+LayananAdministrasiPendaftaran ..> LayananPencarianCalon
+LayananAdministrasiPendaftaran ..> LayananPelaporanDaftar
+LayananAdministrasiPendaftaran ..> LayananAnalisisNilaiTertinggi
+LayananAdministrasiPendaftaran ..> RingkasanStatistikPendaftaran
+
+ArsipPendaftaranCalon *--> "0..*" CalonMahasiswa
+
+LayananPencarianCalon --> ArsipPendaftaranCalon
+LayananPencarianCalon ..> CalonMahasiswa
+
+PenilaiSeleksiCalon --> AturanKelulusan
+AturanKelulusanInstitusi ..|> AturanKelulusan
+PenilaiSeleksiCalon ..> CalonMahasiswa
+
+LayananPelaporanDaftar ..> CalonMahasiswa
+LayananAnalisisNilaiTertinggi ..> CalonMahasiswa
+RingkasanStatistikPendaftaran ..> CalonMahasiswa
+
+@enduml
