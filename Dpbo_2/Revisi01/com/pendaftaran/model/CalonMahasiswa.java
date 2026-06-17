@@ -5,12 +5,16 @@ import com.pendaftaran.service.PenilaiService;
 public class CalonMahasiswa extends Person {
 
     private final String fakultas;
+    private final String prodi;
+    private final String jalurSeleksi;
     private int totalNilai;
     private StatusKelulusan statusKelulusan;
 
-    public CalonMahasiswa(String id, String nama, String fakultas, int totalNilai) {
+    public CalonMahasiswa(String id, String nama, String fakultas, String prodi, String jalurSeleksi, int totalNilai) {
         super(id, nama);
         this.fakultas = fakultas;
+        this.prodi = prodi;
+        this.jalurSeleksi = jalurSeleksi;
         this.totalNilai = totalNilai;
         this.statusKelulusan = StatusKelulusan.BELUM_DINILAIKAN;
     }
@@ -34,6 +38,14 @@ public class CalonMahasiswa extends Person {
         return fakultas;
     }
 
+    public String getProdi() {
+        return prodi;
+    }
+
+    public String getJalurSeleksi() {
+        return jalurSeleksi;
+    }
+
     public int getTotalNilai() {
         return totalNilai;
     }
@@ -55,7 +67,11 @@ public class CalonMahasiswa extends Person {
     }
 
     public String ringkasan() {
-        return "[" + getId() + "] " + getNama() + " - Fakultas: " + fakultas
-                + " - Total Nilai: " + totalNilai + " - Status: " + statusKelulusan.getLabel();
+        return "[" + getId() + "] " + getNama() 
+                + " - Fakultas: " + fakultas
+                + " - Prodi: " + prodi
+                + " - Jalur: " + jalurSeleksi
+                + " - Total Nilai: " + totalNilai
+                + " - Status: " + statusKelulusan.getLabel();
     }
 }

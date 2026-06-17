@@ -42,14 +42,34 @@ public class CalonMenu {
 
     private void daftarCalon() {
         System.out.println("\n== Pendaftaran Calon Mahasiswa ==");
-        String fakultas = InputReader.bacaString("Masukkan fakultas: ", scanner);
+        String nama = InputReader.bacaString("Nama lengkap: ", scanner);
+        if (!ValidationUtil.isNotBlank(nama)) {
+            System.out.println("Nama tidak boleh kosong.");
+            return;
+        }
+        String fakultas = InputReader.bacaString("Fakultas pilihan: ", scanner);
         if (!ValidationUtil.isNotBlank(fakultas)) {
             System.out.println("Fakultas tidak boleh kosong.");
             return;
         }
-        CalonMahasiswa calon = pendaftaranService.daftarCalon(fakultas);
-        System.out.println("Pendaftaran berhasil. Nama calon Anda: " + calon.getNama());
-        System.out.println("Silakan login menggunakan nama tersebut pada menu Calon Mahasiswa.");
+        String prodi = InputReader.bacaString("Program studi: ", scanner);
+        if (!ValidationUtil.isNotBlank(prodi)) {
+            System.out.println("Program studi tidak boleh kosong.");
+            return;
+        }
+        String jalurSeleksi = InputReader.bacaString("Jalur seleksi: ", scanner);
+        if (!ValidationUtil.isNotBlank(jalurSeleksi)) {
+            System.out.println("Jalur seleksi tidak boleh kosong.");
+            return;
+        }
+
+        CalonMahasiswa calon = pendaftaranService.daftarCalon(nama, fakultas, prodi, jalurSeleksi);
+        if (calon != null) {
+            System.out.println("Pendaftaran berhasil. Nama calon Anda: " + calon.getNama());
+            System.out.println("Silakan login menggunakan nama tersebut pada menu Calon Mahasiswa.");
+        } else {
+            System.out.println("Calon mahasiswa dengan nama yang sama sudah terdaftar.");
+        }
     }
 
     private void loginCalon() {

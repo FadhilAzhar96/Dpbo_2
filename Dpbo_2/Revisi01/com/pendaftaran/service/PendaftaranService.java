@@ -14,20 +14,22 @@ public class PendaftaranService {
         this.penilaiService = penilaiService;
     }
 
-    public boolean tambahCalon(String nama, String fakultas, int totalNilai) {
+    public boolean tambahCalon(String nama, String fakultas, String prodi, String jalurSeleksi, int totalNilai) {
         if (repository.cariCalon(nama) != null) {
             return false;
         }
-        CalonMahasiswa calon = new CalonMahasiswa(generateId(), nama, fakultas, totalNilai);
+        CalonMahasiswa calon = new CalonMahasiswa(generateId(), nama, fakultas, prodi, jalurSeleksi, totalNilai);
         calon.tentukanStatus(penilaiService);
         repository.simpan(calon);
         return true;
     }
 
-    public CalonMahasiswa daftarCalon(String fakultas) {
-        String nama = "Calon-" + nextId;
+    public CalonMahasiswa daftarCalon(String nama, String fakultas, String prodi, String jalurSeleksi) {
+        if (repository.cariCalon(nama) != null) {
+            return null;
+        }
         int totalNilai = 0;
-        CalonMahasiswa calon = new CalonMahasiswa(generateId(), nama, fakultas, totalNilai);
+        CalonMahasiswa calon = new CalonMahasiswa(generateId(), nama, fakultas, prodi, jalurSeleksi, totalNilai);
         calon.tentukanStatus(penilaiService);
         repository.simpan(calon);
         return calon;

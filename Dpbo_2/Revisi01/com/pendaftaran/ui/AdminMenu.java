@@ -22,48 +22,24 @@ public class AdminMenu {
         while (true) {
             System.out.println();
             System.out.println("== Menu Admin ==");
-            System.out.println("1. Tambah calon mahasiswa");
-            System.out.println("2. Tampilkan semua calon");
-            System.out.println("3. Cari calon");
-            System.out.println("4. Ubah total nilai calon");
-            System.out.println("5. Hapus calon");
+            System.out.println("1. Tampilkan semua calon");
+            System.out.println("2. Cari calon");
+            System.out.println("3. Ubah total nilai calon");
+            System.out.println("4. Hapus calon");
             System.out.println("0. Logout");
 
-            int pilihan = InputReader.bacaInt("Pilih menu admin: ", scanner, 0, 5);
+            int pilihan = InputReader.bacaInt("Pilih menu admin: ", scanner, 0, 4);
             switch (pilihan) {
-                case 1 -> tambahCalon();
-                case 2 -> tampilkanSemuaCalon();
-                case 3 -> cariCalon();
-                case 4 -> ubahTotalNilaiCalon();
-                case 5 -> hapusCalon();
+                case 1 -> tampilkanSemuaCalon();
+                case 2 -> cariCalon();
+                case 3 -> ubahTotalNilaiCalon();
+                case 4 -> hapusCalon();
                 case 0 -> {
                     System.out.println("Logout berhasil. Kembali ke menu utama.");
                     return;
                 }
                 default -> System.out.println("Pilihan tidak valid. Coba lagi.");
             }
-        }
-    }
-
-    private void tambahCalon() {
-        System.out.println("\n== Tambah Calon Mahasiswa ==");
-        String nama = InputReader.bacaString("Nama calon: ", scanner);
-        if (!ValidationUtil.isNotBlank(nama)) {
-            System.out.println("Nama tidak boleh kosong.");
-            return;
-        }
-        String fakultas = InputReader.bacaString("Fakultas pilihan: ", scanner);
-        if (!ValidationUtil.isNotBlank(fakultas)) {
-            System.out.println("Fakultas tidak boleh kosong.");
-            return;
-        }
-        int totalNilai = InputReader.bacaInt("Total nilai: ", scanner, 0, 300);
-
-        boolean berhasil = pendaftaranService.tambahCalon(nama, fakultas, totalNilai);
-        if (berhasil) {
-            System.out.println("Calon mahasiswa berhasil ditambahkan.");
-        } else {
-            System.out.println("Calon mahasiswa dengan nama yang sama sudah terdaftar.");
         }
     }
 
