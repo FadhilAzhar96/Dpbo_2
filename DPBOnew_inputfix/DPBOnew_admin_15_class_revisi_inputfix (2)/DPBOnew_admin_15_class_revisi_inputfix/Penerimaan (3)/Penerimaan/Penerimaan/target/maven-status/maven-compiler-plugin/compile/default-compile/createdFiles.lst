@@ -1,0 +1,15 @@
+com\penerimaan\Penerimaan.class
+penyimpanan\listCalon.class
+user\Calonmhs.class
+ui\uiCalon.class
+ui\uiUtama.class
+Penilaian\penilaian.class
+penyimpanan\inputNilai.class
+penyimpanan\pengumuman.class
+user\User.class
+Penilaian\Pendaftaran.class
+penyimpanan\Validasi.class
+ui\uiAdmin.class
+user\userAdmin.class
+user\Identifikasi.class
+Akun\akun.class
